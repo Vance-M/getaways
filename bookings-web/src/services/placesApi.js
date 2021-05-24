@@ -4,6 +4,7 @@ export const getPlaces = async () => {
     const result = await response.json();
     return result.map(
       ({
+        id,
         price_per_night,
         image_thumbnail,
         max_guests,
@@ -11,6 +12,33 @@ export const getPlaces = async () => {
         ...place
       }) => ({
         ...place,
+        id: id,
+        pricePerNight: price_per_night,
+        imageThumbnail: image_thumbnail,
+        maxGuests: max_guests,
+        petFriendly: pet_friendly,
+      })
+    );
+  } else {
+    throw new Error(await response.json());
+  }
+};
+
+export const getPlaceByName = async (id) => {
+  const response = await fetch(`${process.env.BASE_URL}/places/${id}`);
+  if (response.ok) {
+    const result = await response.json();
+    return result.map(
+      ({
+        id,
+        price_per_night,
+        image_thumbnail,
+        max_guests,
+        pet_friendly,
+        ...place
+      }) => ({
+        ...place,
+        id: id,
         pricePerNight: price_per_night,
         imageThumbnail: image_thumbnail,
         maxGuests: max_guests,
